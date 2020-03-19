@@ -21,7 +21,7 @@
 <p>如果信息出现乱码，请使用本仓库/releases/内的语言文件</p>
 <p>目前有</p>
 <ul>
-<li>英语（英国）--en_uk.lang</li>
+<li>英语（英国）--en_gb.lang</li>
 <li>简体中文（中国）--zh_cn.lang</li>
 <li>繁体中文（中国台湾）--zh_tw.lang</li>
 </ul>
