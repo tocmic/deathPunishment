@@ -1,7 +1,7 @@
 # deathPunishment
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-##功能列表：
+## 功能列表：
 
 <li>随机掉落n件物品</li>
 <li>掉落经验值</li>
@@ -9,7 +9,7 @@
 <li>重生扣生命/饥饿</li>
 <li>重生时给予药水效果</li>
 
-##With this plugin,you can
+## With this plugin,you can
 
 <li>Drop items randomly</li>
 <li>Drop experience</li>
@@ -17,7 +17,7 @@
 <li>Limit respawn health and/or food level</li>
 <li>Cast potion effects on respawn</li>
 
-##安装||Install
+## 安装||Install
 
 这个插件不需要任何前置插件！将其放进服务器地址/plugins里面重启即可
 如果信息出现乱码，请使用本仓库/lang/内的语言文件
@@ -27,7 +27,7 @@
 繁体中文（中国台湾）--zh_tw.lang
 可以使用
 
-##配置文件||Configuration
+## 配置文件||Configuration
 
 ```
 Enabled: true
