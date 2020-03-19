@@ -8,9 +8,7 @@
 <li>显示死亡标题</li>
 <li>重生扣生命/饥饿</li>
 <li>重生时给予药水效果</li>
-
-## With this plugin,you can
-
+<p> </p>
 <li>Drop items randomly</li>
 <li>Drop experience</li>
 <li>Show death titles</li>
@@ -19,13 +17,23 @@
 
 ## 安装||Install
 
-这个插件不需要任何前置插件！将其放进服务器地址/plugins里面重启即可
-如果信息出现乱码，请使用本仓库/lang/内的语言文件
-目前仅有
-英语（英国）--en_uk.lang
-简体中文（中国）--zh_cn.lang
-繁体中文（中国台湾）--zh_tw.lang
-可以使用
+<p>这个插件不需要任何前置插件！将其放进服务器地址/plugins里面重启即可</p>
+<p>如果信息出现乱码，请使用本仓库/releases/内的语言文件</p>
+<p>目前有</p>
+<ul>
+<li>英语（英国）--en_uk.lang</li>
+<li>简体中文（中国）--zh_cn.lang</li>
+<li>繁体中文（中国台湾）--zh_tw.lang</li>
+</ul>
+<p> </p>
+<p>This plugin doesn't requires any other plugins.Please put it into server/plugins and restart the server</p>
+<p>If random code occurs in game,please replace .lang files in plugins/deathPunishment/lang/ with the .lang files in this repository/releases/</p>
+<p>Currently there are</p>
+<ul>
+<li>English（United Kingdom）--en_gb.lang</li>
+<li>Simplified Chinese（China）--zh_cn.lang</li>
+<li>Traditional Chinese（Chinese Taipei）--zh_tw.lang</li>
+</ul>
 
 ## 配置文件||Configuration
 
