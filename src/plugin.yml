@@ -1,0 +1,33 @@
+name: deathPunishment
+main: com.nflsedition.deathPunishment.deathPunishment
+version: 1.0
+api-version: 1.15
+author: loms1999
+commands:
+  deathpunishment:
+    aliases: [dp]
+    description: §4deathPunishment§f插件主命令，用§c/dp§f也能使用
+    usage: /deathpunishment
+    permission: deathpunishment.use
+    permission-message: §c哎呀呀，你没有权限执行这个指令呢！
+permissions:
+  deathpunishment.*:
+    description: §4deathPunishment§f插件主权限
+    children:
+      deathpunishment.use: true
+      deathpunishment.admin: true
+  deathpunishment.admin:
+    description: 管理员使用权限
+    default: op
+    children:
+      deathpunishment.admin.help: true
+      deathpunishment.admin.what: true
+  deathpunishment.use:
+    description: 玩家基本的使用权限，后续版本考虑删除
+    default: true
+  deathpunishment.admin.help:
+    description: 帮助命令使用权限
+    default: op
+  deathpunishment.admin.what:
+    description: 查询物品名命令使用权限
+    default: op

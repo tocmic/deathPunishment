@@ -1,0 +1,91 @@
+Enabled: true
+SurvivalOnly: true
+#输入""以禁用该条消息
+#温馨提示：颜色代码的打法是 alt+1+6+7
+#leave it as "" to disable a message
+#eg: deathworld:""
+Messages:
+  death: "§c你真菜，真的"
+  deathworld: "§c你原地去世于§f"
+  drop: "个物品已损失，鼠标悬浮以查看"
+  respawn: "§c重生之后，你的身体大不如前……"
+  exp: "§c级节操掉了一地"
+  #以下是死亡时显示的死亡屏幕,两个字符串全部留空以关闭
+  title: "§c死"
+  subtitle: "§c这就菜得离谱"
+  fadein: 10
+  stay: 100
+  fadeout: 40
+DropSlots:
+  Count: 20
+  Enabled: true
+  ProtectedSlots: 
+    - 39
+    - 38
+    - 37
+    - 36
+  ProtectedItems: 
+    - DIAMOND
+    - DIAMOND_SWORD
+    - DIAMOND_PICKAXE
+    - EMERALD
+DropExp:
+  Level: 5
+  Enabled: true
+  SpawnOrb: true
+  OrbPerLevel: 2
+  OrbValue: 5
+Health: 10.0
+Hunger: 10
+Potions:
+  Enabled: true
+  1:
+    Type: HUNGER
+    Duration: 100
+    Amplifier: 1
+  2:
+    Type: WEAKNESS
+    Duration: 100
+    Amplifier: 1
+  3:
+    Type: SLOW_DIGGING
+    Duration: 100
+    Amplifier: 1
+#在下面编辑世界设定
+#worlds settings goes herevvv
+world:
+  DropSlots:
+    Count: 20
+    Enabled: true
+    ProtectedSlots: []
+    ProtectedItems: []
+  DropExp:
+    Level: 5
+    Enabled: true
+    SpawnOrb: true
+    OrbPerLevel: 1
+    OrbValue: 5
+  Health: 10.0
+  Hunger: 10
+  Potions:
+    Enabled: true
+    1:
+      Type: HUNGER
+      Duration: 1200
+      Amplifier: 2
+    2:
+      Type: WEAKNESS
+      Duration: 1200
+      Amplifier: 1
+    3:
+      Type: SLOW_DIGGING
+      Duration: 1200
+      Amplifier: 2
+    4:
+      Type: SLOW
+      Duration: 1200
+      Amplifier: 1
+    5:
+      Type: CONFUSION
+      Amplifier: 1
+      Duration: 600
