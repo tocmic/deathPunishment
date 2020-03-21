@@ -9,8 +9,6 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -77,7 +75,7 @@ public class dpPlayerDeathEventListener implements Listener{
 				
 				if (gamemode) {
 					player.sendMessage(messagehash.get("death"));
-					player.sendMessage(messagehash.get("deathworld")+worldname);
+					player.sendMessage(String.format(messagehash.get("deathworld"),worldname));
 					
 					if (dp.getConfig().contains(worldname))
 						worlddir = worldname+".";
@@ -129,37 +127,49 @@ public class dpPlayerDeathEventListener implements Listener{
 								}
 							}
 							player.sendTitle(messagehash.get("title"), messagehash.get("subtitle"), dp.getConfig().getInt("Messages.fadein"), dp.getConfig().getInt("Messages.stay"), dp.getConfig().getInt("Messages.fadeout"));
-							Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tellraw "+player.getName()+" [{\"text\":\""+droppedcount+messagehash.get("drop")+"\",\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"hoverEvent\":{\"action\":\"show_text\",\"value\":\""+namestring+"\"},\"color\":\"red\",\"underlined\":\"true\"}]");
+							Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tellraw "+player.getName()+" [{\"text\":\""+String.format(messagehash.get("drop"),droppedcount)+"\",\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"hoverEvent\":{\"action\":\"show_text\",\"value\":\""+namestring+"\"},\"color\":\"red\",\"underlined\":\"true\"}]");
 							player.updateInventory();
 						}
 					}
 					
 					//µôÂä¾­Ñé
 					
-					int level = dp.getConfig().getInt(worlddir+"DropExp.Level");
-					int orbperlevel = dp.getConfig().getInt(worlddir+"DropExp.OrbPerLevel");
-					int orbvalue = dp.getConfig().getInt(worlddir+"DropExp.OrbValue");
-					ExperienceOrb orb;
-					
-					if ((dp.getConfig().contains(worlddir+"DropExp.Enabled"))&&(dp.getConfig().getBoolean(worlddir+"DropExp.Enabled"))) {
-						if (player.getLevel() >= level) {
-							player.giveExpLevels(-level);
-							for(int i=0;i<player.getLevel()*orbperlevel;i++) {
-								orb =  (ExperienceOrb) location.getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
-								orb.setExperience(orbvalue);
-							}
-							player.sendMessage(level+messagehash.get("exp"));
-						}else {
-							for(int i=0;i<player.getLevel()*orbperlevel;i++) {
-								orb =  (ExperienceOrb) location.getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
-								orb.setExperience(orbvalue);
-								
-							}
-							player.sendMessage(player.getLevel()+messagehash.get("exp"));
-							player.setLevel(0);
+					if (dp.getConfig().getBoolean(worlddir+"DropExp.Enabled")){
+						
+						String mode = dp.getConfig().getString(worlddir+"DropExp.Mode");
+						int droppedlevel = 0;
+						
+						switch (mode) {
+						case "Fixed":{
+							int level = dp.getConfig().getInt(worlddir+"DropExp.Fixed.Level");
+							boolean spawnorb = dp.getConfig().getBoolean(worlddir+"DropExp.Fixed.SpawnOrb");
+							int orbperlevel = dp.getConfig().getInt(worlddir+"DropExp.Fixed.OrbPerLevel");
+							int orbvalue = dp.getConfig().getInt(worlddir+"DropExp.Fixed.OrbValue");
+							droppedlevel = dpExpDrop.dropExpFixed(player, level, spawnorb, orbperlevel, orbvalue);
+							break;
 						}
+						case "Random":{
+							int levelmin = dp.getConfig().getInt(worlddir+"DropExp.Random.LevelMin");
+							int levelmax = dp.getConfig().getInt(worlddir+"DropExp.Random.LevelMax");
+							boolean spawnorb = dp.getConfig().getBoolean(worlddir+"DropExp.Fixed.SpawnOrb");
+							int orbperlevel = dp.getConfig().getInt(worlddir+"DropExp.Fixed.OrbPerLevel");
+							int orbvalue = dp.getConfig().getInt(worlddir+"DropExp.Fixed.OrbValue");
+							droppedlevel = dpExpDrop.dropExpRandom(player, levelmin, levelmax, spawnorb, orbperlevel, orbvalue);
+							break;
+						}
+						case "Rate":{
+							double levelrate = dp.getConfig().getDouble(worlddir+"DropExp.Rate.Level");
+							boolean spawnorb = dp.getConfig().getBoolean(worlddir+"DropExp.Rate.SpawnOrb");
+							int orbperlevel = dp.getConfig().getInt(worlddir+"DropExp.Rate.OrbPerLevel");
+							int orbvalue = dp.getConfig().getInt(worlddir+"DropExp.Rate.OrbValue");
+							droppedlevel = dpExpDrop.dropExpRate(player, levelrate, spawnorb, orbperlevel, orbvalue);
+							break;
+						}
+						default: droppedlevel = dpExpDrop.dropExpDefault(player, dp.getConfig().getInt(worlddir+"DropExp.Default.Limit"));break;
+						}
+						
+						player.sendMessage(String.format(messagehash.get("exp"), ""+droppedlevel));
 					}
-					
 				}
 			}
 		}else {

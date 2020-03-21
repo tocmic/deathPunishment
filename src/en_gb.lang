@@ -1,9 +1,9 @@
 {
 "deathPunishment.message.death":"§cNoob",
-"deathPunishment.message.deathworld":"§cYou died in §f",
-"deathPunishment.message.drop":" of your items lost,hover to check",
+"deathPunishment.message.deathworld":"§cYou died in §f%s",
+"deathPunishment.message.drop":"%s of your items lost,hover to check",
 "deathPunishment.message.respawn":"§cYou feel weak after respawn...",
-"deathPunishment.message.exp":"§c levels lost",
+"deathPunishment.message.exp":"%s§c levels lost",
 "deathPunishment.message.title":"§c死",
 "deathPunishment.message.subtitle":"§cYou are a dumb ass",
 "addServer.add": "Done",

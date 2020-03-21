@@ -1,9 +1,9 @@
 {
 "deathPunishment.message.death":"§c你真菜，真的",
-"deathPunishment.message.deathworld":"§c你原地去世于§f",
-"deathPunishment.message.drop":"个物品已损失，鼠标悬浮以查看",
+"deathPunishment.message.deathworld":"§c你原地去世于§f%s",
+"deathPunishment.message.drop":"%s个物品已损失，鼠标悬浮以查看",
 "deathPunishment.message.respawn":"§c重生之后，你的身体大不如前……",
-"deathPunishment.message.exp":"§c级节操掉了一地",
+"deathPunishment.message.exp":"%s§c级节操掉了一地",
 "deathPunishment.message.title":"§c死",
 "deathPunishment.message.subtitle":"§c这就菜得离谱",
 "addServer.add": "\u5b8c\u6210",
