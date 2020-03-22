@@ -22,6 +22,7 @@ permissions:
     children:
       deathpunishment.admin.help: true
       deathpunishment.admin.what: true
+      deathpunishment.admin.lore: true
   deathpunishment.use:
     description: 玩家基本的使用权限，后续版本考虑删除
     default: true
@@ -30,4 +31,7 @@ permissions:
     default: op
   deathpunishment.admin.what:
     description: 查询物品名命令使用权限
+    default: op
+  deathpunishment.admin.lore:
+    description: 修改lore标签命令使用权限
     default: op

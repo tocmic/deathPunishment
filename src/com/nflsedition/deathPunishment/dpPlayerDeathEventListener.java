@@ -9,6 +9,7 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -85,6 +86,8 @@ public class dpPlayerDeathEventListener implements Listener{
 					int count = dp.getConfig().getInt(worlddir+"DropSlots.Count");
 					List<?> protectedslots = dp.getConfig().getList(worlddir+"DropSlots.ProtectedSlots");
 					List<?> protecteditems = dp.getConfig().getList(worlddir+"DropSlots.ProtectedItems");
+					List<?> protectedlores = dp.getConfig().getList(worlddir+"DropSlots.ProtectedLores");
+					List<?> protectedenchantments = dp.getConfig().getList(worlddir+"DropSlots.ProtectedEnchantments");
 					
 					if ((dp.getConfig().contains(worlddir+"DropSlots.Enabled"))&&(dp.getConfig().getBoolean(worlddir+"DropSlots.Enabled"))) {
 						if (count!=0) {
@@ -100,7 +103,36 @@ public class dpPlayerDeathEventListener implements Listener{
 									droppingslot = Slots.get(ran1);
 									
 									if (inventory.getItem(droppingslot)!=null) {
-										if (!(protecteditems.contains(inventory.getItem(droppingslot).getType().toString()))) {
+										boolean anyProtected = false;
+										if (protecteditems.contains(inventory.getItem(droppingslot).getType().toString())) {
+											anyProtected = true;
+										}
+											
+										//Lore保护
+											
+											
+										for (Object lore : protectedlores) {
+											String string = lore.toString();
+											if (lore.toString().contains("%s")) {
+												string = String.format(string, player.getName());
+											}
+											if (inventory.getItem(droppingslot).getItemMeta().hasLore()) {
+												if (inventory.getItem(droppingslot).getItemMeta().getLore().contains(string)) {
+													anyProtected = true;
+												}
+											}
+										}
+										
+										//附魔保护
+										
+										for (Object enchantment: protectedenchantments) {
+											Enchantment ench = Enchantment.getByName((String) enchantment);
+											if (inventory.getItem(droppingslot).getEnchantments().containsKey(ench)) {
+												anyProtected = true;
+											}
+										}
+										
+										if (!(anyProtected)){
 											location.getWorld().dropItem(location, inventory.getItem(droppingslot));
 											droppedcount++;
 											if (inventory.getItem(droppingslot).getItemMeta().hasDisplayName()){
@@ -117,8 +149,8 @@ public class dpPlayerDeathEventListener implements Listener{
 												}
 											}
 											inventory.clear(droppingslot);
+											i++;
 										}
-										i++;
 									}
 									Slots.remove(ran1);
 								}else {

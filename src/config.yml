@@ -1,4 +1,5 @@
 Enabled: true                        #插件是否开启
+version: "1.1"
 SurvivalOnly: true                   #是否仅限生存玩家死亡后生效，强烈建议开启
 #   输入""以禁用该条消息←还没做好
 #   温馨提示：颜色代码的打法是 alt+1+6+7
@@ -31,6 +32,11 @@ DropSlots:
     - DIAMOND_SWORD
     - DIAMOND_PICKAXE
     - EMERALD
+  ProtectedLores:                    #写保护的lore标签，%s代表玩家的名字
+    - "灵魂绑定"
+    - "§d绑定：%s"
+  ProtectedEnchantments:
+    - BINDING_CURSE
 DropExp:
   Enabled: true                      #是否启用掉落经验值
   #经验掉落模式，Default:原版，Fixed:固定，Random:随机，Rate:按比例
@@ -77,6 +83,11 @@ world:                               #世界的名称，注意大小写
     Enabled: true
     ProtectedSlots: []
     ProtectedItems: []
+    ProtectedLores:                    #写保护的lore标签，%s代表玩家的名字
+      - "灵魂绑定"
+      - "§d绑定：%s"
+    ProtectedEnchantments:
+      - BINDING_CURSE
   DropExp:
     Enabled: true                      #是否启用掉落经验值
     #经验掉落模式，Default:原版，Fixed:固定，Random:随机，Rate:按比例
