@@ -1,8 +1,9 @@
 name: deathPunishment
 main: com.nflsedition.deathPunishment.deathPunishment
-version: 1.0
+version: 1.1
 api-version: 1.15
 author: loms1999
+softdepend: [Vault]
 commands:
   deathpunishment:
     aliases: [dp]

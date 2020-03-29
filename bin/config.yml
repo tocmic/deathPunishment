@@ -7,10 +7,14 @@ SurvivalOnly: true                   #是否仅限生存玩家死亡后生效，
 #   eg: deathworld:""
 Messages:
   death: "§c你真菜，真的"                #死亡时显示的信息
-  deathworld: "§c你原地去世于%s§f"         #死亡时显示的世界信息
-  drop: "%s个物品已损失，鼠标悬浮以查看"         #掉落物品显示的提示，暂时不支持颜色代码
+  deathworld: "§c你原地去世于%s§f"       #死亡时显示的世界信息
+  drop: "%s个物品已损失，鼠标悬浮以查看"       #掉落物品显示的提示，暂时不支持颜色代码
   respawn: "§c重生之后，你的身体大不如前……"   #重生时显示的信息
-  exp: "§c%s级节操掉了一地"                 #经验掉落提示
+  exp: "§c%s级节操掉了一地"               #经验掉落提示
+  money: "§c已掉落§f%s§c元金钱"          #金钱掉落提示
+  loot: "§f%s§c元金币掉在了地上"           #掉落金钱时显示的文本
+  lootname: "§c金币§f%s§c元"           #掉落金钱的物品显示名字
+  lootpickup: "§c你拾得金币§f%s§c元"     #掉落金钱的物品显示名字
 #   以下是死亡时显示的死亡屏幕,两个字符串全部留空以关闭
   title: "§c死"                       #死亡时标题栏显示的文本
   subtitle: "§c这就菜得离谱"             #死亡时副标题显示的文本
@@ -59,6 +63,23 @@ DropExp:
     SpawnOrb: true                   #是否生成经验球
     OrbPerLevel: 1                   #每损失一级掉落几个经验球
     OrbValue: 7                      #每个经验球的经验值
+DropMoney:
+  Enabled: true                      #是否开启掉落金钱
+  Loot: 0.5                          #掉落金钱的比率，0。0为不掉落
+  LootIcon: GOLD_NUGGET              #掉落金钱的物品图标
+  LootNameVisible: true              #掉落物名字是否可见
+  DigitalAfterDot: 0                 #获得的金钱小数点后保留几位数
+  #金钱掉落模式，Fixed:固定，Random:随机，Rate:按比例
+  Mode: "Fixed"
+  Fixed:
+    Money: 10.0                      #钱数
+  Random:
+    MoneyMin: 1.0                    #最小钱数
+    MoneyMax: 10.0                   #最大钱数
+    DigitAfterDot: 0                 #小数点后保留位数
+  Rate:
+    MoneyRate: 0.5                   #掉落已有钱数的比例
+    DigitAfterDot: 0                 #小数点后保留几位数
 Health: 10.0                         #重生后扣除几点生命值
 Hunger: 10                           #重生后扣除几点饥饿值，注意没有小数
 Potions:                             #药水效果
@@ -110,6 +131,23 @@ world:                               #世界的名称，注意大小写
       SpawnOrb: true                   #是否生成经验球
       OrbPerLevel: 1                   #每损失一级掉落几个经验球
       OrbValue: 7                      #每个经验球的经验值
+  DropMoney:
+    Enabled: true                      #是否开启掉落金钱
+    Loot: 0.5                          #掉落金钱的比率，0。0为不掉落
+    LootIcon: GOLD_NUGGET              #掉落金钱的物品图标
+    LootNameVisible: true              #掉落物名字是否可见，名字格式在“Messages”或语言文件内设定
+    DigitalAfterDot: 0                 #获得的金钱小数点后保留几位数
+    #金钱掉落模式，Fixed:固定，Random:随机，Rate:按比例
+    Mode: "Fixed"
+    Fixed:
+      Money: 10.0                      #钱数
+    Random:
+      MoneyMin: 1.0                    #最小钱数
+      MoneyMax: 10.0                   #最大钱数
+      DigitAfterDot: 0                 #小数点后保留位数
+    Rate:
+      MoneyRate: 0.5                   #掉落已有钱数的比例
+      DigitAfterDot: 0                 #小数点后保留几位数
   Health: 10.0
   Hunger: 10
   Potions:
