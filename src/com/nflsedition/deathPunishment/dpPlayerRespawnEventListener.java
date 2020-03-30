@@ -33,6 +33,10 @@ public class dpPlayerRespawnEventListener implements Listener{
 			}
 			final String worlddir = deathworld;
 			boolean gamemode = true;
+			String locale = "zh_cn";
+			if (dp.getConfig().getBoolean("Locale")) {
+				locale = player.getLocale();
+			}
 			
 			if (dp.getConfig().getBoolean("Enabled")) {  //检查是否启用
 				if (dp.getConfig().getBoolean("SurvivalOnly")) {  //检查是否仅限生存
@@ -41,7 +45,7 @@ public class dpPlayerRespawnEventListener implements Listener{
 					}
 				}
 				if (gamemode) {
-					player.sendMessage(dpFile.getLocaleMessage("respawn", player.getLocale(),dp.getConfig().getString("Messages.respawn")));
+					player.sendMessage(dpFile.getLocaleMessage("respawn", locale,dp.getConfig().getString("Messages.respawn")));
 				    new BukkitRunnable() {
                         
                         @Override

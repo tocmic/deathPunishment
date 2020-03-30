@@ -72,8 +72,7 @@ public class dpFile {
 				if (!(lang.get("block.minecraft."+material.toString().toLowerCase())==null)) {
 					result = (String)lang.get("block.minecraft."+material.toString().toLowerCase());
 				}
-			}
-			if (material.isItem()) {
+			}else{
 				if (!(lang.get("item.minecraft."+material.toString().toLowerCase())==null)) {
 					result = (String)lang.get("item.minecraft."+material.toString().toLowerCase());
 				}

@@ -1,6 +1,12 @@
 Enabled: true                        #插件是否开启
-version: "1.1"
+version: "1.2"
 SurvivalOnly: true                   #是否仅限生存玩家死亡后生效，强烈建议开启
+Locale: true                         #是否开启本地化功能
+LowVersionMode:
+  Enabled: false
+  #标题栏的内容，为raw json文本格式，可以参照minecraftwiki上title命令修改
+  Title: '{"text":"LowVersionMode","color":"red"}'
+  Subtitle: '{"text":"This server is running a low version","color":"red"}'
 #   输入""以禁用该条消息←还没做好
 #   温馨提示：颜色代码的打法是 alt+1+6+7
 #   leave it as "" to disable a message<---WIP

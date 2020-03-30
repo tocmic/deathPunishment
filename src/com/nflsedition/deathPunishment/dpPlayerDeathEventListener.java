@@ -46,6 +46,10 @@ public class dpPlayerDeathEventListener implements Listener{
 			Inventory inventory = player.getInventory();
 			String worldname = location.getWorld().getName();
 			String worlddir = "";
+			String locale = "zh_cn";
+			if ((dp.getConfig().getBoolean("Locale"))&&(!dp.getConfig().getBoolean("LowVersionMode.Enabled"))) {
+				locale = player.getLocale();
+			}
 			
 			Map<String, String> messagehash = new HashMap<>();
 			messagehash.put("death", dp.getConfig().getString("Messages.death"));
@@ -59,104 +63,11 @@ public class dpPlayerDeathEventListener implements Listener{
 			messagehash.put("lootname", dp.getConfig().getString("Messages.lootname"));
 			
 			for (Map.Entry<String, String> entry: messagehash.entrySet()) {
-				messagehash.put(entry.getKey(), dpFile.getLocaleMessage(entry.getKey(), player.getLocale(), entry.getValue()));
+				messagehash.put(entry.getKey(), dpFile.getLocaleMessage(entry.getKey(), locale, entry.getValue()));
 			}
 			
 			//记录死亡世界
 			deathPunishment.loghash.put(player.getName(), worldname);
-			
-			//掉落金钱
-			
-			if ((dp.getConfig().getBoolean(worlddir+"DropMoney.Enabled"))&&(deathPunishment.economyEnabled)){
-				String mode = dp.getConfig().getString(worlddir+"DropMoney.Mode");
-				Random random = new Random();
-				if (mode != null) {
-					double amount = 0.0;
-					switch (mode) {
-						case "Fixed": {
-							double money = dp.getConfig().getDouble(worlddir+"DropMoney.Fixed.Money");
-							OfflinePlayer offlinePlayer = (OfflinePlayer)player;
-							if (deathPunishment.economy.hasAccount(offlinePlayer)){
-								if (deathPunishment.economy.getBalance(offlinePlayer)>=money) {
-									deathPunishment.economy.withdrawPlayer(offlinePlayer, money);
-									amount = money;
-								}else {
-									deathPunishment.economy.withdrawPlayer(offlinePlayer, deathPunishment.economy.getBalance(offlinePlayer));
-									amount = deathPunishment.economy.getBalance(offlinePlayer);
-								}
-							}else {
-								deathPunishment.economy.createPlayerAccount(offlinePlayer);
-							}
-							break;
-						}
-						case "Random": {
-							double moneymin = dp.getConfig().getDouble(worlddir+"DropMoney.Random.MoneyMin");
-							double moneymax = dp.getConfig().getDouble(worlddir+"DropMoney.Random.MoneyMax");
-							int digit = dp.getConfig().getInt(worlddir+"DropMoney.Random.DigitAfterDot");
-							double moneyraw = random.nextDouble()*(moneymax-moneymin)+moneymin;
-							BigDecimal bigDecimal = new BigDecimal(moneyraw);
-							double money = bigDecimal.setScale(digit,BigDecimal.ROUND_HALF_UP).doubleValue();
-							OfflinePlayer offlinePlayer = (OfflinePlayer)player;
-							if (deathPunishment.economy.hasAccount(offlinePlayer)){
-								if (deathPunishment.economy.getBalance(offlinePlayer)>=money) {
-									deathPunishment.economy.withdrawPlayer(offlinePlayer, money);
-									amount = money;
-								}else {
-									deathPunishment.economy.withdrawPlayer(offlinePlayer, deathPunishment.economy.getBalance(offlinePlayer));
-									amount = deathPunishment.economy.getBalance(offlinePlayer);
-								}
-							}else {
-								deathPunishment.economy.createPlayerAccount(offlinePlayer);
-							}
-							break;
-						}
-						case "Rate": {
-							double moneyrate = dp.getConfig().getDouble(worlddir+"DropMoney.Rate.MoneyRate");
-							int digit = dp.getConfig().getInt(worlddir+"DropMoney.Random.DigitAfterDot");
-							OfflinePlayer offlinePlayer = (OfflinePlayer)player;
-							double moneyraw = deathPunishment.economy.getBalance(offlinePlayer)*moneyrate;
-							BigDecimal bigDecimal = new BigDecimal(moneyraw);
-							double money = bigDecimal.setScale(digit,BigDecimal.ROUND_HALF_UP).doubleValue();
-							if (deathPunishment.economy.hasAccount(offlinePlayer)){
-								if (deathPunishment.economy.getBalance(offlinePlayer)>=money) {
-									deathPunishment.economy.withdrawPlayer(offlinePlayer, money);
-									amount = money;
-								}else {
-									deathPunishment.economy.withdrawPlayer(offlinePlayer, deathPunishment.economy.getBalance(offlinePlayer));
-									amount = deathPunishment.economy.getBalance(offlinePlayer);
-								}
-							}else {
-								deathPunishment.economy.createPlayerAccount(offlinePlayer);
-							}
-							break;
-						}
-						default: dp.getLogger().info("金钱掉落模式配置错误！已取消掉落");break;
-					}
-					player.sendMessage(String.format(messagehash.get("money"), ""+amount));
-					if (dp.getConfig().getDouble(worlddir+"DropMoney.Loot")>0){
-						double loot = dp.getConfig().getDouble(worlddir+"DropMoney.Loot");
-						int digit = dp.getConfig().getInt(worlddir+"DropMoney.DigitAfterDot");
-						BigDecimal lootbd = new BigDecimal(amount*loot);
-						double lootfinal = lootbd.setScale(digit,BigDecimal.ROUND_HALF_UP).doubleValue();
-						Material looticon = Material.getMaterial(dp.getConfig().getString(worlddir+"DropMoney.LootIcon"));
-						ItemStack lootitem = new ItemStack(looticon, (int)Math.floor(amount));
-						ItemMeta meta = lootitem.getItemMeta();
-						meta.setDisplayName(""+amount);
-						List<String> lore = new ArrayList<>();
-						lore.add("§c金钱掉落");
-						lore.add(""+lootfinal);
-						meta.setLore(lore);
-						meta.setDisplayName(""+lootfinal);
-						lootitem.setItemMeta(meta);
-						Item itemdrop = location.getWorld().dropItem(location, lootitem);
-						itemdrop.setCustomNameVisible(true);
-						itemdrop.setCustomName(String.format(messagehash.get("lootname"), ""+lootfinal));
-						player.sendMessage(String.format(messagehash.get("loot"), ""+lootfinal));
-					}
-				}else {
-					dp.getLogger().info("读取金钱掉落配置时发生错误！请删除配置文件重新生成！");
-				}
-			}
 			
 			//掉落物品
 			
@@ -165,7 +76,7 @@ public class dpPlayerDeathEventListener implements Listener{
 			List<Integer> Slots= new ArrayList<>();
 			int namestringlns = 0,droppedcount = 0,droppingslot = 0,ran1 = 1;
 			
-			for(int i=0;i<41;i++) {
+			for(int i=0;i<player.getInventory().getSize();i++) {
 				Slots.add(i);
 			}
 			
@@ -182,6 +93,101 @@ public class dpPlayerDeathEventListener implements Listener{
 					
 					if (dp.getConfig().contains(worldname))
 						worlddir = worldname+".";
+					
+					//掉落金钱
+					
+					if ((dp.getConfig().getBoolean(worlddir+"DropMoney.Enabled"))&&(deathPunishment.economyEnabled)){
+						String mode = dp.getConfig().getString(worlddir+"DropMoney.Mode");
+						Random random = new Random();
+						if (mode != null) {
+							double amount = 0.0;
+							switch (mode) {
+								case "Fixed": {
+									double money = dp.getConfig().getDouble(worlddir+"DropMoney.Fixed.Money");
+									OfflinePlayer offlinePlayer = (OfflinePlayer)player;
+									if (deathPunishment.economy.hasAccount(offlinePlayer)){
+										if (deathPunishment.economy.getBalance(offlinePlayer)>=money) {
+											deathPunishment.economy.withdrawPlayer(offlinePlayer, money);
+											amount = money;
+										}else {
+											deathPunishment.economy.withdrawPlayer(offlinePlayer, deathPunishment.economy.getBalance(offlinePlayer));
+											amount = deathPunishment.economy.getBalance(offlinePlayer);
+										}
+									}else {
+										deathPunishment.economy.createPlayerAccount(offlinePlayer);
+									}
+									break;
+								}
+								case "Random": {
+									double moneymin = dp.getConfig().getDouble(worlddir+"DropMoney.Random.MoneyMin");
+									double moneymax = dp.getConfig().getDouble(worlddir+"DropMoney.Random.MoneyMax");
+									int digit = dp.getConfig().getInt(worlddir+"DropMoney.Random.DigitAfterDot");
+									double moneyraw = random.nextDouble()*(moneymax-moneymin)+moneymin;
+									BigDecimal bigDecimal = new BigDecimal(moneyraw);
+									double money = bigDecimal.setScale(digit,BigDecimal.ROUND_HALF_UP).doubleValue();
+									OfflinePlayer offlinePlayer = (OfflinePlayer)player;
+									if (deathPunishment.economy.hasAccount(offlinePlayer)){
+										if (deathPunishment.economy.getBalance(offlinePlayer)>=money) {
+											deathPunishment.economy.withdrawPlayer(offlinePlayer, money);
+											amount = money;
+										}else {
+											deathPunishment.economy.withdrawPlayer(offlinePlayer, deathPunishment.economy.getBalance(offlinePlayer));
+											amount = deathPunishment.economy.getBalance(offlinePlayer);
+										}
+									}else {
+										deathPunishment.economy.createPlayerAccount(offlinePlayer);
+									}
+									break;
+								}
+								case "Rate": {
+									double moneyrate = dp.getConfig().getDouble(worlddir+"DropMoney.Rate.MoneyRate");
+									int digit = dp.getConfig().getInt(worlddir+"DropMoney.Random.DigitAfterDot");
+									OfflinePlayer offlinePlayer = (OfflinePlayer)player;
+									double moneyraw = deathPunishment.economy.getBalance(offlinePlayer)*moneyrate;
+									BigDecimal bigDecimal = new BigDecimal(moneyraw);
+									double money = bigDecimal.setScale(digit,BigDecimal.ROUND_HALF_UP).doubleValue();
+									if (deathPunishment.economy.hasAccount(offlinePlayer)){
+										if (deathPunishment.economy.getBalance(offlinePlayer)>=money) {
+											deathPunishment.economy.withdrawPlayer(offlinePlayer, money);
+											amount = money;
+										}else {
+											deathPunishment.economy.withdrawPlayer(offlinePlayer, deathPunishment.economy.getBalance(offlinePlayer));
+											amount = deathPunishment.economy.getBalance(offlinePlayer);
+										}
+									}else {
+										deathPunishment.economy.createPlayerAccount(offlinePlayer);
+									}
+									break;
+								}
+								default: dp.getLogger().info("金钱掉落模式配置错误！已取消掉落");break;
+							}
+							player.sendMessage(String.format(messagehash.get("money"), ""+amount));
+							if (dp.getConfig().getDouble(worlddir+"DropMoney.Loot")>0.0){
+								double loot = dp.getConfig().getDouble(worlddir+"DropMoney.Loot");
+								int digit = dp.getConfig().getInt(worlddir+"DropMoney.DigitAfterDot");
+								BigDecimal lootbd = new BigDecimal(amount*loot);
+								double lootfinal = lootbd.setScale(digit,BigDecimal.ROUND_HALF_UP).doubleValue();
+								if (lootfinal>0.0) {
+									Material looticon = Material.getMaterial(dp.getConfig().getString(worlddir+"DropMoney.LootIcon"));
+									ItemStack lootitem = new ItemStack(looticon, (int)Math.floor(amount));
+									ItemMeta meta = lootitem.getItemMeta();
+									meta.setDisplayName(""+amount);
+									List<String> lore = new ArrayList<>();
+									lore.add("§c金钱掉落");
+									lore.add(""+lootfinal);
+									meta.setLore(lore);
+									meta.setDisplayName(""+lootfinal);
+									lootitem.setItemMeta(meta);
+									Item itemdrop = location.getWorld().dropItem(location, lootitem);
+									itemdrop.setCustomNameVisible(true);
+									itemdrop.setCustomName(String.format(messagehash.get("lootname"), ""+lootfinal));
+									player.sendMessage(String.format(messagehash.get("loot"), ""+lootfinal));
+								}
+							}
+						}else {
+							dp.getLogger().info("读取金钱掉落配置时发生错误！请删除配置文件重新生成！");
+						}
+					}
 					
 					//掉落物品
 					
@@ -244,7 +250,7 @@ public class dpPlayerDeathEventListener implements Listener{
 													namestringlns++;
 												}
 											}else {
-												namestring += dpFile.getLocaleName(inventory.getItem(droppingslot).getType(),player.getLocale())+"§c*"+inventory.getItem(droppingslot).getAmount()+", §f";
+												namestring += dpFile.getLocaleName(inventory.getItem(droppingslot).getType(),locale)+"§c*"+inventory.getItem(droppingslot).getAmount()+", §f";
 												if ((namestring.length()-namestringlns*10)>=10) {
 													namestring += "\\n";
 													namestringlns++;
@@ -260,7 +266,13 @@ public class dpPlayerDeathEventListener implements Listener{
 									Bukkit.getServer().getLogger().info("这个孩子不会算数呢……");
 								}
 							}
-							player.sendTitle(messagehash.get("title"), messagehash.get("subtitle"), dp.getConfig().getInt("Messages.fadein"), dp.getConfig().getInt("Messages.stay"), dp.getConfig().getInt("Messages.fadeout"));
+							if (!dp.getConfig().getBoolean("LowVersionMode.Enabled")) {
+								player.sendTitle(messagehash.get("title"), messagehash.get("subtitle"), dp.getConfig().getInt("Messages.fadein"), dp.getConfig().getInt("Messages.stay"), dp.getConfig().getInt("Messages.fadeout"));
+							}else {
+								Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "title "+player.getName()+" title "+dp.getConfig().getString("LowVersionMode.Title"));
+								Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "title "+player.getName()+" subtitle "+dp.getConfig().getString("LowVersionMode.Subtitle"));
+								Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "title "+player.getName()+" times "+dp.getConfig().getInt("Messages.fadein")+" "+dp.getConfig().getInt("Messages.stay")+" "+dp.getConfig().getInt("Messages.fadeout"));
+							}
 							Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tellraw "+player.getName()+" [{\"text\":\""+String.format(messagehash.get("drop"),droppedcount)+"\",\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"hoverEvent\":{\"action\":\"show_text\",\"value\":\""+namestring+"\"},\"color\":\"red\",\"underlined\":\"true\"}]");
 							player.updateInventory();
 						}

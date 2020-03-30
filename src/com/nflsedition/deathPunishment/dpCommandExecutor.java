@@ -32,14 +32,29 @@ public class dpCommandExecutor implements CommandExecutor{
 					Player p=(Player)sender;
 					if (p.hasPermission("deathpunishment.admin.help")) {
 						p.sendMessage("§c[§f死亡惩罚插件指令帮助§c]");
-						p.sendMessage("c使用§f\"/deathpunishment help\"§c显示本页面");
-						p.sendMessage(dp.getConfig().getString("DropSlots.Count"));
+						p.sendMessage("§c使用§f\"/deathpunishment help\"§c显示本页面");
+						p.sendMessage("§c命令中的§f\"deathpunishment\"§c可替换为§e\"dp\"");
+						p.sendMessage("§c/deathpunishment §fhelp§7: 显示帮助页面");
+						p.sendMessage("§c/deathpunishment §freload§7: 重载插件的配置文件");
+						p.sendMessage("§c/deathpunishment §fwhat§7: 查看手上物品的相关信息");
+						p.sendMessage("§c/deathpunishment §flore§7: 更改手上物品的标签");
+						p.sendMessage("§f  ├ §c/deathpunishment lore §fadd §e<标签1> [<标签2>] [<标签3>] ...§7: 添加任意条标签");
+						p.sendMessage("§f  ├ §c/deathpunishment lore §fset §e<行数> <标签>§7: 设置某行标签的内容");
+						p.sendMessage("§f  └ §c/deathpunishment lore §fremove §e<行数>§7: 删除某一行标签");
 					}else{
 						p.sendMessage("§c[§f死亡惩罚插件§c]§f:§c你的权限不足！");
 					}
 				}else{
 					sender.sendMessage("§c[§f死亡惩罚插件指令帮助§c]");
 					sender.sendMessage("§c使用§f\"/deathpunishment help\"§c显示本页面");
+					sender.sendMessage("§c命令中的§f\"deathpunishment\"§c可替换为§e\"dp\"");
+					sender.sendMessage("§c/deathpunishment §fhelp§7: 显示帮助页面");
+					sender.sendMessage("§c/deathpunishment §freload§7: 重载插件的配置文件");
+					sender.sendMessage("§c/deathpunishment §fwhat§7: 查看手上物品的相关信息");
+					sender.sendMessage("§c/deathpunishment §flore§7: 更改手上物品的标签");
+					sender.sendMessage("§f  ├ §c/deathpunishment lore §fadd §e<标签1> [<标签2>] [<标签3>] ...§7: 添加任意条标签");
+					sender.sendMessage("§f  ├ §c/deathpunishment lore §fset §e<行数> <标签>§7: 设置某行标签的内容");
+					sender.sendMessage("§f  └ §c/deathpunishment lore §fremove §e<行数>§7: 删除某一行标签");
 				}
 			}
 			
@@ -52,6 +67,7 @@ public class dpCommandExecutor implements CommandExecutor{
 						p.sendMessage("§c[§f死亡惩罚插件§c]§f:§8你手上的物品id是 §f"+p.getInventory().getItemInMainHand().getType().toString());
 						p.sendMessage("§c[§f死亡惩罚插件§c]§f:§8注意大小写！ §f");
 						p.sendMessage("§c[§f死亡惩罚插件§c]§f:§8你的语言是 §f"+p.getLocale());
+						p.sendMessage("§c[§f死亡惩罚插件§c]§f:§8你所在的世界是 §f"+p.getLocation().getWorld().getName());
 						//显示附魔的名字
 						if ((p.getInventory().getItemInMainHand().hasItemMeta())&&((p.getInventory().getItemInMainHand().getItemMeta().hasEnchants()))){
 							p.sendMessage("§c[§f死亡惩罚插件§c]§f:§8你手上物品的附魔为§f:"+p.getInventory().getItemInMainHand().getItemMeta().getEnchants().toString());

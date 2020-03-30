@@ -56,6 +56,17 @@ public class deathPunishment extends JavaPlugin implements Listener{
 		}
 		reloadConfig();
 		
+		getLogger().info("配置文件版本:"+getConfig().getString("version"));
+		if (getConfig().getString("version").equals("1.1")) {
+			getConfig().set("Locale", true);
+			getConfig().set("LowVersionMode.Enabled", false);
+			getConfig().set("LowVersionMode.Title", "{\"text\":\"LowVersionMode\",\"color\":\"red\"}");
+			getConfig().set("LowVersionMode.Subtitle", "{\"text\":\"This server is running a low version\",\"color\":\"red\"}");
+			getConfig().set("version", "1.2");
+			saveConfig();
+			getLogger().info("配置文件版本已升级到v1.1！");
+		}
+		
 		//玩家死亡世界数据
 		
 		File logfile = new File(getDataFolder(),"log.bin");
@@ -106,7 +117,11 @@ public class deathPunishment extends JavaPlugin implements Listener{
 		//注册事件
 		this.getServer().getPluginManager().registerEvents(new dpPlayerDeathEventListener(this), this);
 		this.getServer().getPluginManager().registerEvents(new dpPlayerRespawnEventListener(this), this);
-		this.getServer().getPluginManager().registerEvents(new dpEntityPickupItemEventListener(this), this);
+		if (getConfig().getBoolean("LowVersionMode.Enabled")) {
+			this.getServer().getPluginManager().registerEvents(new dpPlayerPickupItemEventListener(this), this);
+		}else {
+			this.getServer().getPluginManager().registerEvents(new dpEntityPickupItemEventListener(this), this);
+		}
 		this.getServer().getPluginManager().registerEvents(this, this);
 		
 		getLogger().info("deathPunishment死亡惩罚插件已启用!");
